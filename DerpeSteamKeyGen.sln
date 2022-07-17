@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DerpeSteamKeyGen", "DerpeSteamKeyGen\DerpeSteamKeyGen.csproj", "{2897D380-2B8D-44AA-9964-B11CDB26F7FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2897D380-2B8D-44AA-9964-B11CDB26F7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2897D380-2B8D-44AA-9964-B11CDB26F7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2897D380-2B8D-44AA-9964-B11CDB26F7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2897D380-2B8D-44AA-9964-B11CDB26F7FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06C9C776-D34C-4A76-BF95-D7DDDC93A22B}
+	EndGlobalSection
+EndGlobal
