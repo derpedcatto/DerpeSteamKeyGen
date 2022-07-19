@@ -37,8 +37,13 @@
             this.StripMenuItem_ChangeDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.StripMenuItem_ClearAll = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.StripMenuItem_ToggleBackground = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuItem_Background = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuItem_White = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuItem_PickColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuItem_Gradient = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuItem_SaulGoodman = new System.Windows.Forms.ToolStripMenuItem();
             this.StripMenuItem_Derpe = new System.Windows.Forms.ToolStripMenuItem();
+            this.StripMenuItem_WawusWithBalloon = new System.Windows.Forms.ToolStripMenuItem();
             this.StripMenu_Links = new System.Windows.Forms.ToolStripMenuItem();
             this.StripMenuItem_Github = new System.Windows.Forms.ToolStripMenuItem();
             this.TextBox_Key = new System.Windows.Forms.TextBox();
@@ -46,9 +51,13 @@
             this.Flag_SaveToFile = new System.Windows.Forms.CheckBox();
             this.DerpeLeft = new System.Windows.Forms.PictureBox();
             this.DerpeRight = new System.Windows.Forms.PictureBox();
+            this.PictureBox_SaulGoodman = new System.Windows.Forms.PictureBox();
+            this.PictureBox_WawusWithBalloon = new System.Windows.Forms.PictureBox();
             this.MainFormStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DerpeLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DerpeRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SaulGoodman)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_WawusWithBalloon)).BeginInit();
             this.SuspendLayout();
             // 
             // Button_GenerateKey
@@ -117,29 +126,65 @@
             // backgroundToolStripMenuItem
             // 
             this.backgroundToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.StripMenuItem_ToggleBackground,
-            this.StripMenuItem_Derpe});
+            this.StripMenuItem_Background,
+            this.StripMenuItem_Derpe,
+            this.StripMenuItem_WawusWithBalloon});
             this.backgroundToolStripMenuItem.Name = "backgroundToolStripMenuItem";
-            this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
-            this.backgroundToolStripMenuItem.Text = "Background";
+            this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(30, 20);
+            this.backgroundToolStripMenuItem.Text = "UI";
             // 
-            // StripMenuItem_ToggleBackground
+            // StripMenuItem_Background
             // 
-            this.StripMenuItem_ToggleBackground.Checked = true;
-            this.StripMenuItem_ToggleBackground.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.StripMenuItem_ToggleBackground.Name = "StripMenuItem_ToggleBackground";
-            this.StripMenuItem_ToggleBackground.Size = new System.Drawing.Size(180, 22);
-            this.StripMenuItem_ToggleBackground.Text = "Colors";
-            this.StripMenuItem_ToggleBackground.Click += new System.EventHandler(this.StripMenuItem_ToggleBackground_Click);
+            this.StripMenuItem_Background.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StripMenuItem_White,
+            this.StripMenuItem_PickColor,
+            this.StripMenuItem_Gradient,
+            this.StripMenuItem_SaulGoodman});
+            this.StripMenuItem_Background.Name = "StripMenuItem_Background";
+            this.StripMenuItem_Background.Size = new System.Drawing.Size(183, 22);
+            this.StripMenuItem_Background.Text = "Background";
+            // 
+            // StripMenuItem_White
+            // 
+            this.StripMenuItem_White.Name = "StripMenuItem_White";
+            this.StripMenuItem_White.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_White.Text = "White";
+            this.StripMenuItem_White.Click += new System.EventHandler(this.StripMenuItem_White_Click);
+            // 
+            // StripMenuItem_PickColor
+            // 
+            this.StripMenuItem_PickColor.Name = "StripMenuItem_PickColor";
+            this.StripMenuItem_PickColor.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_PickColor.Text = "Pick Color";
+            this.StripMenuItem_PickColor.Click += new System.EventHandler(this.StripMenuItem_PickColor_Click);
+            // 
+            // StripMenuItem_Gradient
+            // 
+            this.StripMenuItem_Gradient.Name = "StripMenuItem_Gradient";
+            this.StripMenuItem_Gradient.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_Gradient.Text = "Gradient";
+            this.StripMenuItem_Gradient.Click += new System.EventHandler(this.StripMenuItem_Gradient_Click);
+            // 
+            // StripMenuItem_SaulGoodman
+            // 
+            this.StripMenuItem_SaulGoodman.Name = "StripMenuItem_SaulGoodman";
+            this.StripMenuItem_SaulGoodman.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_SaulGoodman.Text = "Saul Goodman";
+            this.StripMenuItem_SaulGoodman.Click += new System.EventHandler(this.StripMenuItem_SaulGoodman_Click);
             // 
             // StripMenuItem_Derpe
             // 
-            this.StripMenuItem_Derpe.Checked = true;
-            this.StripMenuItem_Derpe.CheckState = System.Windows.Forms.CheckState.Checked;
             this.StripMenuItem_Derpe.Name = "StripMenuItem_Derpe";
-            this.StripMenuItem_Derpe.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_Derpe.Size = new System.Drawing.Size(183, 22);
             this.StripMenuItem_Derpe.Text = "Derpe";
             this.StripMenuItem_Derpe.Click += new System.EventHandler(this.StripMenuItem_Derpe_Click);
+            // 
+            // StripMenuItem_WawusWithBalloon
+            // 
+            this.StripMenuItem_WawusWithBalloon.Name = "StripMenuItem_WawusWithBalloon";
+            this.StripMenuItem_WawusWithBalloon.Size = new System.Drawing.Size(183, 22);
+            this.StripMenuItem_WawusWithBalloon.Text = "Wawus With Balloon";
+            this.StripMenuItem_WawusWithBalloon.Click += new System.EventHandler(this.StripMenuItem_WawusWithBalloon_Click);
             // 
             // StripMenu_Links
             // 
@@ -197,11 +242,12 @@
             // DerpeLeft
             // 
             this.DerpeLeft.Image = ((System.Drawing.Image)(resources.GetObject("DerpeLeft.Image")));
-            this.DerpeLeft.Location = new System.Drawing.Point(-4, 150);
+            this.DerpeLeft.Location = new System.Drawing.Point(-3, 150);
             this.DerpeLeft.Name = "DerpeLeft";
             this.DerpeLeft.Size = new System.Drawing.Size(50, 55);
             this.DerpeLeft.TabIndex = 5;
             this.DerpeLeft.TabStop = false;
+            this.DerpeLeft.Visible = false;
             // 
             // DerpeRight
             // 
@@ -211,6 +257,27 @@
             this.DerpeRight.Size = new System.Drawing.Size(52, 55);
             this.DerpeRight.TabIndex = 6;
             this.DerpeRight.TabStop = false;
+            this.DerpeRight.Visible = false;
+            // 
+            // PictureBox_SaulGoodman
+            // 
+            this.PictureBox_SaulGoodman.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox_SaulGoodman.Image")));
+            this.PictureBox_SaulGoodman.Location = new System.Drawing.Point(0, 27);
+            this.PictureBox_SaulGoodman.Name = "PictureBox_SaulGoodman";
+            this.PictureBox_SaulGoodman.Size = new System.Drawing.Size(219, 178);
+            this.PictureBox_SaulGoodman.TabIndex = 7;
+            this.PictureBox_SaulGoodman.TabStop = false;
+            // 
+            // PictureBox_WawusWithBalloon
+            // 
+            this.PictureBox_WawusWithBalloon.BackColor = System.Drawing.SystemColors.Control;
+            this.PictureBox_WawusWithBalloon.Image = ((System.Drawing.Image)(resources.GetObject("PictureBox_WawusWithBalloon.Image")));
+            this.PictureBox_WawusWithBalloon.Location = new System.Drawing.Point(187, 27);
+            this.PictureBox_WawusWithBalloon.Name = "PictureBox_WawusWithBalloon";
+            this.PictureBox_WawusWithBalloon.Size = new System.Drawing.Size(47, 86);
+            this.PictureBox_WawusWithBalloon.TabIndex = 8;
+            this.PictureBox_WawusWithBalloon.TabStop = false;
+            this.PictureBox_WawusWithBalloon.Visible = false;
             // 
             // MainForm
             // 
@@ -218,6 +285,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(219, 206);
+            this.Controls.Add(this.PictureBox_WawusWithBalloon);
             this.Controls.Add(this.DerpeRight);
             this.Controls.Add(this.DerpeLeft);
             this.Controls.Add(this.Flag_SaveToFile);
@@ -225,6 +293,7 @@
             this.Controls.Add(this.TextBox_Key);
             this.Controls.Add(this.Button_GenerateKey);
             this.Controls.Add(this.MainFormStrip);
+            this.Controls.Add(this.PictureBox_SaulGoodman);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainFormStrip;
@@ -232,10 +301,14 @@
             this.MinimizeBox = false;
             this.Name = "MainForm";
             this.Text = "Derpe Steam Key Gen";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_OnFormClosed);
+            this.Load += new System.EventHandler(this.MainForm_OnFormLoad);
             this.MainFormStrip.ResumeLayout(false);
             this.MainFormStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DerpeLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DerpeRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SaulGoodman)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_WawusWithBalloon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -256,9 +329,16 @@
         private CheckBox Flag_SaveToFile;
         private ToolStripMenuItem StripMenuItem_ChangeDirectory;
         private ToolStripMenuItem backgroundToolStripMenuItem;
-        private ToolStripMenuItem StripMenuItem_ToggleBackground;
+        private ToolStripMenuItem StripMenuItem_Background;
         private PictureBox DerpeLeft;
         private PictureBox DerpeRight;
         private ToolStripMenuItem StripMenuItem_Derpe;
+        private ToolStripMenuItem StripMenuItem_White;
+        private ToolStripMenuItem StripMenuItem_Gradient;
+        private ToolStripMenuItem StripMenuItem_SaulGoodman;
+        private ToolStripMenuItem StripMenuItem_PickColor;
+        private PictureBox PictureBox_SaulGoodman;
+        private ToolStripMenuItem StripMenuItem_WawusWithBalloon;
+        private PictureBox PictureBox_WawusWithBalloon;
     }
 }

@@ -1,92 +1,78 @@
 namespace DerpeSteamKeyGen
 {
+    /// <summary>
+    /// Enumeration of directions.
+    /// </summary>
+    enum Direction { DOWN_LEFT, DOWN_RIGHT, UP_LEFT, UP_RIGHT }
+
     public partial class MainForm : Form
     {
-        #region Variables - Background
+        #region Variables
 
-        private static System.Windows.Forms.Timer TIMER = new();
-        bool backgroundAnimated = true;
-        int[] colorVal = { 255, 255, 255 };
-        bool[] colorSwitch = { false, false, false };
+        /// <summary>
+        /// Stores path to key list (example: "D:\\keys.txt").
+        /// </summary>
+        string keylistPath;
+
+
+        /// <summary>
+        /// Stores width and height of active space border.
+        /// </summary>
+        readonly Point formInternalBorder = new(219, 205);
+
+
+        /// <summary>
+        /// Used by 'Gradient' background option.
+        /// </summary>
+        System.Windows.Forms.Timer gradientTimer = new();
+
+        /// <summary>
+        /// Used by 'Gradient' background option. Stores target color.
+        /// </summary>
+        Color gradientTargetColor = Color.White;
+
+
+        /// <summary>
+        /// Used by 'Wawus With Balloon' bouncing picturebox.
+        /// </summary>
+        System.Windows.Forms.Timer wawusTimer = new();
+
+        /// <summary>
+        /// Used by 'Wawus With Balloon' bouncing picturebox. Stores direction of 'Wawus' movement.
+        /// </summary>
+        Direction wawusDir;
 
         #endregion
 
 
-        #region MainForm
 
+        #region Constructor
+
+        /// <summary>
+        /// Main Form constructor.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
+            gradientTimer.Tick += new EventHandler(ColorGenerationStyle);
+            wawusTimer.Tick += new EventHandler(MoveWawus);
 
-            TIMER.Tick += new EventHandler(ARGBGenerationStyle);
-            TIMER.Interval = 90;
-            TIMER.Start();
+            gradientTimer.Interval = 1;
+            wawusTimer.Interval = 1;
         }
 
         #endregion
+
 
 
         #region Service Methods
 
-        #region Colors
-
-        /// <summary>
-        /// Generates a random close-to-original color based of signature array values.
-        /// </summary>
-        private void ARGBPulsatingColorGenerator(int[] valueArr, bool[] switchArr)
-        {
-            var rnd = new Random();
-
-            for (int i = 0; i < colorVal.Length; i++)
-            {
-                if (valueArr[i] >= 215)
-                {
-                    switchArr[i] = true;
-                }
-                else if (valueArr[i] <= 50)
-                {
-                    switchArr[i] = false;
-                }
-
-                if (switchArr[i])
-                {
-                    valueArr[i] -= rnd.Next(rnd.Next(40));
-                }
-                else if (!switchArr[i])
-                {
-                    valueArr[i] += rnd.Next(rnd.Next(40));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Set style of ARGB generation that TIMER Handle will use.
-        /// </summary>
-        private void ARGBGenerationStyle(object? sender, EventArgs e)
-        {
-            ARGBPulsatingColorGenerator(colorVal, colorSwitch);
-
-            SetBackGroundARGB(colorVal[0], colorVal[1], colorVal[2]);
-        }
-
-        /// <summary>
-        /// Changes background color of form backgrounds.
-        /// </summary>
-        private void SetBackGroundARGB(int R, int G, int B)
-        {
-            this.BackColor = Color.FromArgb(R, G, B);
-            MainFormStrip.BackColor = this.BackColor;
-        }
-
-        #endregion
-
-
-        #region Key Generation
+            #region Key Generation
 
         /// <summary>
         /// Randomly generates a key-valid char.
         /// </summary>
-        private char GenerateValidChar()
+        char GenerateKeyValidChar()
         {
             var rnd = new Random();
             char validchar;
@@ -103,40 +89,34 @@ namespace DerpeSteamKeyGen
         /// <summary>
         /// Generates and returns a randomly generated key in AAAAA-BBBBB-CCCCC (5_5_5) format.
         /// </summary>
-        private string GenerateNewKey5_5_5()
+        string GenerateNewKey5_5_5()
         {
-            char[] key = new char[Program.KEY.Length];
+            System.Text.StringBuilder key = new("AAAAA-BBBBB-CCCCC");
 
-            int counter = 0;
-            for (int i = 0; i < Program.KEY.Length; i++)
+            for (int i = 0; i < key.Length; i++)
             {
-                if (counter == 5)
-                {
-                    key[i] = '-';
-                    counter = 0;
+                if (key[i] == '-')
                     continue;
-                }
 
-                key[i] = GenerateValidChar();
-                counter++;
+                key[i] = GenerateKeyValidChar();
             }
 
-            return new string(key);
+            return key.ToString();
         }
 
         #endregion
 
 
-        #region Working With Files
+            #region Working With Files
 
         /// <summary>
-        /// Checks if key list file exists in 'LISTPATH'. If not, promts user to make a new one in the same path.
+        /// Checks if keyslist file exists in 'keylistPath'. If not, promts user to make a new one in the same path.
         /// </summary>
-        private bool FileExists()
+        bool FileExists()
         {
-            if (!File.Exists(Program.LISTPATH))
+            if (!File.Exists(keylistPath))
             {
-                DialogResult message = MessageBox.Show("Keys list file does not exist! Do you want to make a new one?", "Warning!", MessageBoxButtons.YesNo);
+                DialogResult message = MessageBox.Show("Keys list file does not exist in directory! Do you want to make a new one?", "Warning!", MessageBoxButtons.YesNo);
                 switch (message)
                 {
                     case DialogResult.Yes:
@@ -150,13 +130,13 @@ namespace DerpeSteamKeyGen
         }
 
         /// <summary>
-        /// Makes a new key list file in 'LISTPATH' path.
+        /// Makes a new keyslist file in 'keylistPath'.
         /// </summary>
-        private bool NewFile()
+        bool NewFile()
         {
             try
             {
-                System.IO.FileStream f = System.IO.File.Create(Program.LISTPATH);
+                System.IO.FileStream f = System.IO.File.Create(keylistPath);
                 f.Close();
             }
             catch (UnauthorizedAccessException)
@@ -170,16 +150,16 @@ namespace DerpeSteamKeyGen
                 return false;
             }
 
-            MessageBox.Show("File created at default category!");
+            MessageBox.Show("File created!");
             return true;
         }
 
         /// <summary>
-        /// Checks if given key is unique in a given file. 
+        /// Checks if given key is unique in a given file.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="path"></param>
-        private bool CheckUniqueKey(string key, string path)
+        bool CheckIfKeyIsUnique(string key, string path)
         {
             if (!FileExists())
                 return false;
@@ -188,7 +168,6 @@ namespace DerpeSteamKeyGen
             {
                 if (line == key)
                 {
-                    MessageBox.Show("Duplicate key generated! Aborting save.");
                     return false;
                 }
             }
@@ -197,11 +176,11 @@ namespace DerpeSteamKeyGen
         }
 
         /// <summary>
-        /// Saves given key in given path. Checks for duplicates, so all keys are unique
+        /// Saves given key in given path.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="path"></param>
-        private void SaveKeyToFile(string key, string path)
+        void SaveKeyToFile(string key, string path)
         {
             if (!FileExists())
                 return;
@@ -209,13 +188,246 @@ namespace DerpeSteamKeyGen
             File.AppendAllText(path, key + Environment.NewLine);
         }
 
-        #endregion
+            #endregion
 
-
-        #region Other
+            
+            #region Working With Menus
 
         /// <summary>
-        /// Copies given text to clipboard.
+        /// Changes 'Checked' state of all 'root' parent strip menu items to 'false' and sets 'true' to 'index' item.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="index"></param>
+        void SetCheckByIndex(ToolStripMenuItem root, int index)
+        {
+            var itemlist = root.DropDownItems;
+            for (int i = 0; i < itemlist.Count; i++)
+            {
+                var tmp = (ToolStripMenuItem)itemlist[i];
+                tmp.Checked = false;
+
+                if (i == index)
+                    tmp.Checked = true;
+            }
+        }
+
+        /// <summary>
+        /// Returns item index from 'root' that is 'Checked'.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        int GetCheckedItemIndex(ToolStripMenuItem root)
+        {
+            var itemlist = root.DropDownItems;
+            for (int i = 0; i < itemlist.Count; i++)
+            {
+                var tmp = (ToolStripMenuItem)itemlist[i];
+                if (tmp.Checked)
+                    return i;
+            }
+            return 0;
+        }
+
+        void ClickStripMenuItemOnIndex(ToolStripMenuItem root, int index)
+        {
+            var itemlist = root.DropDownItems;
+            itemlist[index].PerformClick();
+        }
+
+
+        /// <summary>
+        /// Controls settings of item switch from 'UI' -> 'Background' parent menu strip. 'item' is an index of item that user chooses.
+        /// </summary>
+        void BackgroundStripMenuItemMaster(int item)
+        {
+            StopAllBackgroundElements();
+            SetCheckByIndex(StripMenuItem_Background, item);
+        }
+        
+        /// <summary>
+        /// Turns off all 'Background' menu strip element actions.
+        /// </summary>
+        void StopAllBackgroundElements()
+        {
+            PictureBox_SaulGoodman.Hide();
+            gradientTimer.Stop();
+        }
+
+            #endregion
+
+
+            #region Working With Elements
+
+        /// <summary>
+        /// Moves 'Wawus' picturebox around the whole screen. If he hits a corner, program closes.
+        /// </summary>
+        private void MoveWawus(object? sender, EventArgs e)
+        {
+            Point point = PictureBox_WawusWithBalloon.Location;
+
+            // Change Wawus location
+            switch (wawusDir)
+            {
+                case Direction.DOWN_LEFT:
+                    point.X--;
+                    point.Y++;
+                    break;
+
+                case Direction.DOWN_RIGHT:
+                    point.X++;
+                    point.Y++;
+                    break;
+
+                case Direction.UP_LEFT:
+                    point.X--;
+                    point.Y--;
+                    break;
+
+                case Direction.UP_RIGHT:
+                    point.X++;
+                    point.Y--;
+                    break;
+            }
+
+            // If Wawus hit a corner
+            if (point.X == 0 && point.Y == 0 ||
+                point.X == 0 && point.Y == formInternalBorder.Y ||
+                point.X == formInternalBorder.X && point.Y == 0 ||
+                point.X == formInternalBorder.X && point.Y == formInternalBorder.Y)
+            {
+                MessageBox.Show("Congratulations! Wawus hit a corner! Exiting program now.");
+                Thread.Sleep(5000);
+                Environment.Exit(0);
+            }
+
+
+            PictureBox_WawusWithBalloon.Location = point;
+
+
+            // Change direction for next tick if form border is hit
+
+            Point size = new Point(PictureBox_WawusWithBalloon.Size);
+
+            // Left wall - X
+            if (point.X == 0 && wawusDir == Direction.UP_LEFT)
+                wawusDir = Direction.UP_RIGHT;
+            if (point.X == 0 && wawusDir == Direction.DOWN_LEFT)
+                wawusDir = Direction.DOWN_RIGHT;
+
+            // Right wall - X
+            if (point.X + size.X == formInternalBorder.X && wawusDir == Direction.DOWN_RIGHT)
+                wawusDir = Direction.DOWN_LEFT;
+            if (point.X + size.X == formInternalBorder.X && wawusDir == Direction.UP_RIGHT)
+                wawusDir = Direction.UP_LEFT;
+
+            // Upper wall - Y
+            if (point.Y == 0 && wawusDir == Direction.UP_LEFT)
+                wawusDir = Direction.DOWN_LEFT;
+            if (point.Y == 0 && wawusDir == Direction.UP_RIGHT)
+                wawusDir = Direction.DOWN_RIGHT;
+
+            // Bottom wall - Y
+            if (point.Y + size.Y == formInternalBorder.Y && wawusDir == Direction.DOWN_LEFT)
+                wawusDir = Direction.UP_LEFT;
+            if (point.Y + size.Y == formInternalBorder.Y && wawusDir == Direction.DOWN_RIGHT)
+                wawusDir = Direction.UP_RIGHT;
+        }
+
+            #endregion
+
+
+            #region Colors
+
+        /// <summary>
+        /// Changes 'formBackgroundColor' values to match the 'gradientTargetColor' values. When target is met, generate new random 'gradientTargetColor' values.
+        /// </summary>
+        Color GradientColorGenerator(Color background)
+        {
+            int[] _b = ColorToArray(background);
+            int[] _t = ColorToArray(gradientTargetColor);
+
+            // Change array values
+            for (int i = 0; i < 3; i++)
+            {
+                if (_b[i] > _t[i])
+                    _b[i]--;
+
+                if (_b[i] < _t[i])
+                    _b[i]++;
+            }
+
+            // Check if target is hit, if true generates a new target
+            if (_b[0] == _t[0] && _b[1] == _t[1] && _b[2] == _t[2])
+            {
+                Random rnd = new();
+                int min = 40;
+                int max = 255;
+                _t = new int[] { rnd.Next(min, max), rnd.Next(min, max), rnd.Next(min, max) };
+
+                gradientTargetColor = ArrayToColor(_t);
+            }
+
+            background = ArrayToColor(_b);
+            return background;
+        }
+
+        /// <summary>
+        /// Changes background color of 'BackColor' and 'FormStrip'.
+        /// </summary>
+        void SetBackgroundColor(Color background)
+        {
+            this.BackColor = background;
+            MainFormStrip.BackColor = background;
+        }
+
+        /// <summary>
+        /// Set style of RGB generation.
+        /// </summary>
+        void ColorGenerationStyle(object? sender, EventArgs e)
+        {
+            SetBackgroundColor(GradientColorGenerator(this.BackColor));
+        }
+
+            #endregion
+
+
+            #region Converters
+
+        /// <summary>
+        /// Returns int values in array from given color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        int[] ColorToArray(Color color)
+        {
+            int[] arr = { color.R, color.G, color.B };
+            return arr;
+        }
+
+        /// <summary>
+        /// Returns Color object from given int array values.
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        Color ArrayToColor(int[] arr)
+        {
+            if (arr.Length != 3)
+                return Color.Red;
+
+            foreach (var value in arr)
+                if (value < 0 || value > 255)
+                    return Color.Red;
+
+            return Color.FromArgb(arr[0], arr[1], arr[2]);
+        }
+
+            #endregion
+
+
+            #region Other
+
+        /// <summary>
+        /// Copies given text to Windows clipboard.
         /// </summary>
         /// <param name="text"></param>
         private void CopyToClipboard(string text)
@@ -224,7 +436,7 @@ namespace DerpeSteamKeyGen
         }
 
         /// <summary>
-        /// Promts user to navigate to the desired path, and returns it as string.
+        /// Promts user to navigate to the desired path. Returns path as string.
         /// </summary>
         private string GetFolderBrowserPath()
         {
@@ -236,34 +448,36 @@ namespace DerpeSteamKeyGen
             return newpathdialog.SelectedPath;
         }
 
+            #endregion
+
         #endregion
 
-
-        #endregion
 
 
         #region Button - Generate Key
 
         /// <summary>
-        /// When clicked, generates a new random key. Also can copy / save key in file if specific flags are set ON.
+        /// When clicked, generates a new random key and copies it to textbox. Also can copy / save key in file if specific flags are set ON.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Button_GenerateKey_Click(object sender, EventArgs e)
         {
-            Program.KEY = GenerateNewKey5_5_5();
-            TextBox_Key.Text = Program.KEY;
+            string key = GenerateNewKey5_5_5();
+            TextBox_Key.Text = key;
 
             if (Flag_CopyToBuffer.Checked)
             {
-                CopyToClipboard(Program.KEY);
+                CopyToClipboard(key);
             }
 
             if (Flag_SaveToFile.Checked)
             {
-                if (CheckUniqueKey(Program.KEY, Program.LISTPATH))
+                if (CheckIfKeyIsUnique(key, keylistPath))
                 {
-                    SaveKeyToFile(Program.KEY, Program.LISTPATH);
+                    SaveKeyToFile(key, keylistPath);
+                }
+                else
+                {
+                    MessageBox.Show("Duplicate key generated! Aborting saving.");
                 }
             }
         }
@@ -271,31 +485,38 @@ namespace DerpeSteamKeyGen
         #endregion
 
 
+
         #region Strip Menu - Saved Keys
 
+        /// <summary>
+        /// When clicked, opens a keylist file in a default user app.
+        /// </summary>
         private void StripMenuItem_OpenFile_Click(object sender, EventArgs e)
         {
             if (!FileExists())
                 return;
-            
-            System.Diagnostics.Process.Start("explorer", Program.LISTPATH);
+
+            System.Diagnostics.Process.Start("explorer", keylistPath);
         }
 
+        /// <summary>
+        /// When clicked, opens a directory, where keylist file is stored.
+        /// </summary>
         private void StripMenuItem_OpenDirectory_Click(object sender, EventArgs e)
         {
             if (!FileExists())
                 return;
 
-            System.Diagnostics.Process.Start("explorer.exe", Path.GetDirectoryName(Program.LISTPATH));
+            System.Diagnostics.Process.Start("explorer.exe", Path.GetDirectoryName(keylistPath));
         }
 
+        /// <summary>
+        /// When clicked, promts user to navigate to desired path where keylist file will be stored. Overrides the file if there's a copy with the same name.
+        /// </summary>
         private void StripMenuItem_ChangeDirectory_Click(object sender, EventArgs e)
         {
-            if (!FileExists())
-                return;
-
-            string oldpath = Program.LISTPATH;
-            string newpath = GetFolderBrowserPath() + Path.GetFileName(Program.LISTPATH);
+            string oldpath = keylistPath;
+            string newpath = GetFolderBrowserPath() + Path.GetFileName(keylistPath);
 
             if (oldpath == newpath)
             {
@@ -303,6 +524,11 @@ namespace DerpeSteamKeyGen
                 return;
             }
 
+            if (!FileExists())
+            {
+                keylistPath = newpath;
+                return;
+            }
 
             try
             {
@@ -334,9 +560,12 @@ namespace DerpeSteamKeyGen
             }
 
             File.Delete(oldpath);
-            Program.LISTPATH = newpath;
+            keylistPath = newpath;
         }
 
+        /// <summary>
+        /// When clicked, deletes everything in keylist file.
+        /// </summary>
         private void StripMenuItem_ClearAll_Click(object sender, EventArgs e)
         {
             if (!FileExists())
@@ -346,7 +575,7 @@ namespace DerpeSteamKeyGen
             switch (message)
             {
                 case DialogResult.Yes:
-                    File.WriteAllText(Program.LISTPATH, String.Empty);
+                    File.WriteAllText(keylistPath, String.Empty);
                     return;
 
                 case DialogResult.No:
@@ -357,29 +586,61 @@ namespace DerpeSteamKeyGen
         #endregion
 
 
-        #region Strip Menu - Background
 
-        private void StripMenuItem_ToggleBackground_Click(object sender, EventArgs e)
+        #region Strip Menu - UI
+
+            #region Background
+
+        /// <summary>
+        /// Enable or disable white background.
+        /// </summary>
+        private void StripMenuItem_White_Click(object sender, EventArgs e)
         {
-            if (backgroundAnimated)
+            BackgroundStripMenuItemMaster(0);
+            SetBackgroundColor(Color.White);
+        }
+
+        /// <summary>
+        /// Promts user to pick their own color.
+        /// </summary>
+        private void StripMenuItem_PickColor_Click(object sender, EventArgs e)
+        {
+            BackgroundStripMenuItemMaster(1);
+
+            ColorDialog colorDialog = new();
+            if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                TIMER.Stop();
-
-                SetBackGroundARGB(255, 255, 255);
-
-                StripMenuItem_ToggleBackground.Checked = false;
-
-                backgroundAnimated = false;
-            }
-            else
-            {
-                TIMER.Start();
-
-                StripMenuItem_ToggleBackground.Checked = true;
-                backgroundAnimated = true;
+                SetBackgroundColor(colorDialog.Color);
             }
         }
 
+        /// <summary>
+        /// Enable or disable gradient background.
+        /// </summary>
+        private void StripMenuItem_Gradient_Click(object sender, EventArgs e)
+        {
+            BackgroundStripMenuItemMaster(2);
+            gradientTimer.Start();
+        }
+
+        /// <summary>
+        /// Enable or disable Saul Goodman background.
+        /// </summary>
+        private void StripMenuItem_SaulGoodman_Click(object sender, EventArgs e)
+        {
+            BackgroundStripMenuItemMaster(3);
+            PictureBox_SaulGoodman.Show();
+            SetBackgroundColor(Color.SaddleBrown);
+        }
+
+            #endregion
+
+
+            #region Other
+
+        /// <summary>
+        /// Enable or disable derpes dancing on the main form. (Don't disable them, they are cool :3)
+        /// </summary>
         private void StripMenuItem_Derpe_Click(object sender, EventArgs e)
         {
             StripMenuItem_Derpe.Checked = !StripMenuItem_Derpe.Checked;
@@ -387,17 +648,133 @@ namespace DerpeSteamKeyGen
             DerpeRight.Visible = !DerpeRight.Visible;
         }
 
+        /// <summary>
+        /// Enable or disable Wawus With Balloon.
+        /// </summary>
+        private void StripMenuItem_WawusWithBalloon_Click(object sender, EventArgs e)
+        {
+            StripMenuItem_WawusWithBalloon.Checked = !StripMenuItem_WawusWithBalloon.Checked;
+
+            if (StripMenuItem_WawusWithBalloon.Checked)
+            {
+                Random rnd = new();
+
+                int x = PictureBox_WawusWithBalloon.Width;
+                int y = PictureBox_WawusWithBalloon.Height;
+
+                wawusDir = (Direction)rnd.Next((int)Direction.DOWN_LEFT, (int)Direction.UP_RIGHT);
+
+                PictureBox_WawusWithBalloon.Location = new Point(rnd.Next(x, formInternalBorder.X - x), 
+                                                                 rnd.Next(y, formInternalBorder.Y - y));
+
+                PictureBox_WawusWithBalloon.Show();
+                wawusTimer.Start();
+            }
+            else
+            {
+                PictureBox_WawusWithBalloon.Hide();
+                wawusTimer.Stop();
+            }
+        }
+
+            #endregion
+
         #endregion
+
 
 
         #region Strip Menu - Links
 
+        /// <summary>
+        /// When clicked, opens this project github page!
+        /// </summary>
         private void StripMenuItem_Github_Click(object sender, EventArgs e)
         {
             var psi = new System.Diagnostics.ProcessStartInfo();
             psi.UseShellExecute = true;
-            psi.FileName = "https://github.com/derpedcatto";
+            psi.FileName = "https://github.com/derpedcatto/DerpeSteamKeyGen";
             System.Diagnostics.Process.Start(psi);
+        }
+
+        #endregion
+
+
+
+        #region Saving/Loading User Preferences (Registry)
+
+        /// <summary>
+        /// Saves user preferences in registry file.
+        /// </summary>
+        private void MainForm_OnFormClosed(object sender, FormClosedEventArgs e)
+        {
+            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\DerpeSteamKeyGen");
+
+            // File
+            key.SetValue("Keylist Path", keylistPath);
+            key.SetValue("Copy To Clipboard Check", Flag_CopyToBuffer.Checked);
+            key.SetValue("Save To File Check", Flag_SaveToFile.Checked);
+
+            // Background Color
+            key.SetValue("Background Color", this.BackColor.ToArgb());
+
+            // Strip Menu - Background
+            key.SetValue("Background Style Index", GetCheckedItemIndex(StripMenuItem_Background));
+
+            // Strip Menu - Other
+            key.SetValue("Derpe Check", StripMenuItem_Derpe.Checked);
+            key.SetValue("Wawus With Balloon Check", StripMenuItem_WawusWithBalloon.Checked);
+
+            key.Close();
+        }
+
+        /// <summary>
+        /// Loads user preferences from registry file.
+        /// </summary>
+        private void MainForm_OnFormLoad(object sender, EventArgs e)
+        {
+            Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\DerpeSteamKeyGen");
+
+            // Generate default settings
+            if (key == null)
+            {
+                // File
+                keylistPath = Path.GetFullPath("keys.txt");
+                Flag_CopyToBuffer.Checked = true;
+                Flag_SaveToFile.Checked = false;
+
+                // Strip Menu - Background
+                StripMenuItem_Gradient_Click(sender, e);
+
+                // Strip Menu - Other
+                StripMenuItem_Derpe_Click(sender, e);   // Show derpe by default
+                // Wawus hidden by default
+            }
+
+            // Load user preferences
+            else
+            {
+                // File
+                keylistPath = (string)key.GetValue("Keylist Path");
+                Flag_CopyToBuffer.Checked = bool.Parse(key.GetValue("Copy To Clipboard Check").ToString());                 
+                Flag_SaveToFile.Checked = bool.Parse(key.GetValue("Save To File Check").ToString());
+
+                // Background Color
+                SetBackgroundColor(Color.FromArgb((int)key.GetValue("Background Color")));
+
+                // Strip Menu - Background
+                int backgroundIndex = (int)key.GetValue("Background Style Index");
+                if (backgroundIndex != 1)   // Hide colorpicker menu if color is already chosen
+                    ClickStripMenuItemOnIndex(StripMenuItem_Background, backgroundIndex);
+                else
+                    BackgroundStripMenuItemMaster(1);
+
+
+                // Strip Menu - Other
+                if (bool.Parse(key.GetValue("Derpe Check").ToString()))
+                    StripMenuItem_Derpe_Click(sender, e);
+                if (bool.Parse(key.GetValue("Wawus With Balloon Check").ToString()))
+                    StripMenuItem_WawusWithBalloon_Click(sender, e);
+            }
         }
 
         #endregion
