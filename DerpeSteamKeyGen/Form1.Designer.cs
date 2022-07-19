@@ -53,6 +53,7 @@
             this.DerpeRight = new System.Windows.Forms.PictureBox();
             this.PictureBox_SaulGoodman = new System.Windows.Forms.PictureBox();
             this.PictureBox_WawusWithBalloon = new System.Windows.Forms.PictureBox();
+            this.StripMenuItem_ResetPathToDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.MainFormStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DerpeLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DerpeRight)).BeginInit();
@@ -90,7 +91,8 @@
             this.StripMenuItem_OpenFile,
             this.StripMenuItem_OpenDirectory,
             this.StripMenuItem_ChangeDirectory,
-            this.StripMenuItem_ClearAll});
+            this.StripMenuItem_ClearAll,
+            this.StripMenuItem_ResetPathToDefault});
             this.StripMenu_SavedKeys.Name = "StripMenu_SavedKeys";
             this.StripMenu_SavedKeys.Size = new System.Drawing.Size(77, 20);
             this.StripMenu_SavedKeys.Text = "Saved Keys";
@@ -98,28 +100,28 @@
             // StripMenuItem_OpenFile
             // 
             this.StripMenuItem_OpenFile.Name = "StripMenuItem_OpenFile";
-            this.StripMenuItem_OpenFile.Size = new System.Drawing.Size(166, 22);
+            this.StripMenuItem_OpenFile.Size = new System.Drawing.Size(185, 22);
             this.StripMenuItem_OpenFile.Text = "Open File";
             this.StripMenuItem_OpenFile.Click += new System.EventHandler(this.StripMenuItem_OpenFile_Click);
             // 
             // StripMenuItem_OpenDirectory
             // 
             this.StripMenuItem_OpenDirectory.Name = "StripMenuItem_OpenDirectory";
-            this.StripMenuItem_OpenDirectory.Size = new System.Drawing.Size(166, 22);
+            this.StripMenuItem_OpenDirectory.Size = new System.Drawing.Size(185, 22);
             this.StripMenuItem_OpenDirectory.Text = "Open Directory";
             this.StripMenuItem_OpenDirectory.Click += new System.EventHandler(this.StripMenuItem_OpenDirectory_Click);
             // 
             // StripMenuItem_ChangeDirectory
             // 
             this.StripMenuItem_ChangeDirectory.Name = "StripMenuItem_ChangeDirectory";
-            this.StripMenuItem_ChangeDirectory.Size = new System.Drawing.Size(166, 22);
+            this.StripMenuItem_ChangeDirectory.Size = new System.Drawing.Size(185, 22);
             this.StripMenuItem_ChangeDirectory.Text = "Change Directory";
             this.StripMenuItem_ChangeDirectory.Click += new System.EventHandler(this.StripMenuItem_ChangeDirectory_Click);
             // 
             // StripMenuItem_ClearAll
             // 
             this.StripMenuItem_ClearAll.Name = "StripMenuItem_ClearAll";
-            this.StripMenuItem_ClearAll.Size = new System.Drawing.Size(166, 22);
+            this.StripMenuItem_ClearAll.Size = new System.Drawing.Size(185, 22);
             this.StripMenuItem_ClearAll.Text = "Clear All";
             this.StripMenuItem_ClearAll.Click += new System.EventHandler(this.StripMenuItem_ClearAll_Click);
             // 
@@ -147,28 +149,28 @@
             // StripMenuItem_White
             // 
             this.StripMenuItem_White.Name = "StripMenuItem_White";
-            this.StripMenuItem_White.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_White.Size = new System.Drawing.Size(152, 22);
             this.StripMenuItem_White.Text = "White";
             this.StripMenuItem_White.Click += new System.EventHandler(this.StripMenuItem_White_Click);
             // 
             // StripMenuItem_PickColor
             // 
             this.StripMenuItem_PickColor.Name = "StripMenuItem_PickColor";
-            this.StripMenuItem_PickColor.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_PickColor.Size = new System.Drawing.Size(152, 22);
             this.StripMenuItem_PickColor.Text = "Pick Color";
             this.StripMenuItem_PickColor.Click += new System.EventHandler(this.StripMenuItem_PickColor_Click);
             // 
             // StripMenuItem_Gradient
             // 
             this.StripMenuItem_Gradient.Name = "StripMenuItem_Gradient";
-            this.StripMenuItem_Gradient.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_Gradient.Size = new System.Drawing.Size(152, 22);
             this.StripMenuItem_Gradient.Text = "Gradient";
             this.StripMenuItem_Gradient.Click += new System.EventHandler(this.StripMenuItem_Gradient_Click);
             // 
             // StripMenuItem_SaulGoodman
             // 
             this.StripMenuItem_SaulGoodman.Name = "StripMenuItem_SaulGoodman";
-            this.StripMenuItem_SaulGoodman.Size = new System.Drawing.Size(180, 22);
+            this.StripMenuItem_SaulGoodman.Size = new System.Drawing.Size(152, 22);
             this.StripMenuItem_SaulGoodman.Text = "Saul Goodman";
             this.StripMenuItem_SaulGoodman.Click += new System.EventHandler(this.StripMenuItem_SaulGoodman_Click);
             // 
@@ -279,6 +281,13 @@
             this.PictureBox_WawusWithBalloon.TabStop = false;
             this.PictureBox_WawusWithBalloon.Visible = false;
             // 
+            // StripMenuItem_ResetPathToDefault
+            // 
+            this.StripMenuItem_ResetPathToDefault.Name = "StripMenuItem_ResetPathToDefault";
+            this.StripMenuItem_ResetPathToDefault.Size = new System.Drawing.Size(185, 22);
+            this.StripMenuItem_ResetPathToDefault.Text = "Reset Path To Default";
+            this.StripMenuItem_ResetPathToDefault.Click += new System.EventHandler(this.StripMenuItem_ResetPathToDefault_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -340,5 +349,6 @@
         private PictureBox PictureBox_SaulGoodman;
         private ToolStripMenuItem StripMenuItem_WawusWithBalloon;
         private PictureBox PictureBox_WawusWithBalloon;
+        private ToolStripMenuItem StripMenuItem_ResetPathToDefault;
     }
 }

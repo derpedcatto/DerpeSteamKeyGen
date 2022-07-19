@@ -566,7 +566,7 @@ namespace DerpeSteamKeyGen
         /// <summary>
         /// When clicked, deletes everything in keylist file.
         /// </summary>
-        private void StripMenuItem_ClearAll_Click(object sender, EventArgs e)
+        void StripMenuItem_ClearAll_Click(object sender, EventArgs e)
         {
             if (!FileExists())
                 return;
@@ -583,13 +583,44 @@ namespace DerpeSteamKeyGen
             }
         }
 
+        /// <summary>
+        /// Resets path to default (where executable is stored).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void StripMenuItem_ResetPathToDefault_Click(object sender, EventArgs e)
+        {
+            string oldpath = keylistPath;
+            try
+            {
+                keylistPath = Application.StartupPath + "keys.txt";
+            }
+            catch
+            {
+                MessageBox.Show("Error!");
+                return;
+            }
+
+            try
+            {
+                File.Copy(oldpath, keylistPath);
+                File.Delete(oldpath);
+            }
+            catch
+            {
+                MessageBox.Show($"Path changed to executable directory! File has not been copied or does not exist.\nOld path: {oldpath}");
+                return;
+            }
+            MessageBox.Show($"Path changed to executable directory! File has been copied.\nOld path: {oldpath}");
+        }
+
         #endregion
 
 
 
         #region Strip Menu - UI
 
-            #region Background
+        #region Background
 
         /// <summary>
         /// Enable or disable white background.
